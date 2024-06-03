@@ -31,3 +31,12 @@ func _process(delta):
 	
 	position += velocity * delta # updates player position
 	position = position.clamp(Vector2.ZERO, screen_size) # clamping to prevent player leaving screen
+
+	if velocity.x != 0: # if moving left or right
+		$AnimatedSprite2D.animation = "walk"
+		$AnimatedSprite2D.flip_v = false # ensures sprite isn't vert flipped
+		$AnimatedSprite2D.flip_h = velocity.x < 0 # sprite (facing right) flips only if moving left
+	elif velocity.y != 0: # if moving up or down without left/right movement
+		$AnimatedSprite2D.animation = "up"
+		$AnimatedSprite2D.flip_v = velocity.y > 0 # sprite (facing up) flips only if moving down
+		
