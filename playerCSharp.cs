@@ -51,11 +51,22 @@ public partial class playerCSharp : Area2D
 			animatedSprite2D.Stop();
 		}
 
-		Position += velocity * (float)delta;
-		Position = new Vector2(
+		Position += velocity * (float)delta; // update player position
+		Position = new Vector2( // prevent inconsistent diagonal speed
 			x: Mathf.Clamp(Position.X, 0, ScreenSize.X),
 			y: Mathf.Clamp(Position.Y, 0, ScreenSize.Y)
 		);
 
+		if (velocity.X != 0) // if moving left or right
+		{
+			animatedSprite2D.Animation = "walk";
+			animatedSprite2D.FlipV = false; // ensure no vert flip
+			animatedSprite2D.FlipH = velocity.X < 0; // sprite (facing right) flips when moving left
+		}
+		else if (velocity.Y != 0) // if moving up or down without left/right movement
+		{
+			animatedSprite2D.Animation = "up";
+			animatedSprite2D.FlipV = velocity.Y > 0;
+		}
 	}
 }
