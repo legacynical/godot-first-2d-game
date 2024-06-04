@@ -3,6 +3,9 @@ using System;
 
 public partial class playerCSharp : Area2D
 {
+	[Signal]
+	public delegate void HitEventHandler();
+
 	[Export]
 	public int Speed { get; set; } = 400; // player move speed (pixels/sec)
 
@@ -12,6 +15,7 @@ public partial class playerCSharp : Area2D
 	public override void _Ready()
 	{
 		ScreenSize = GetViewportRect().Size;
+		Hide();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -68,5 +72,19 @@ public partial class playerCSharp : Area2D
 			animatedSprite2D.Animation = "up";
 			animatedSprite2D.FlipV = velocity.Y > 0;
 		}
+	}
+
+	private void OnBodyEntered(Node2D body)
+	{
+		Hide(); // player disappears after being hit
+		EmitSignal(SignalName.Hit);
+		GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred(CollisionShape2D.PropertyName.Disabled, true);
+	}
+
+	public void Start(Vector2 position)
+	{
+		Position = position;
+		Show();
+		GetNode<CollisionShape2D>("CollisionShape2D").Disabled = false;
 	}
 }
