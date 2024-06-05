@@ -37,6 +37,7 @@ height = 138.0
 
 [node name="PlayerCSharp" type="Area2D"]
 script = ExtResource("1_wiijk")
+metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.5, 0.5)
